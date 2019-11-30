@@ -1,0 +1,56 @@
+---
+title: "NFL Prediction"
+author: "Olivier Belhumeur"
+date: "November 25, 2019"
+output: pdf_document
+---
+
+###Présentation
+
+Je vais tenter de faire des prédictions sur les parties de la NFL en utilisant des principes de Machine Learning
+
+Concretement:
+
+#SMART
+
+#Spécique:
+Prédiction du score des deux équipes adverses au Superbowl
+
+#Mesurable:
+avoir une différence de moins de 9 points par équipe et prédire la victoire  
+
+#Atteignable:
+Avec mes connaissances acquises en informatique, ainsi que les informations du cours de Data Science, je serai en mesure d'effectuer des prédictions
+
+#Temps:
+Dimanche 2 février 2020
+
+
+###Journal
+
+## Méthologie
+2019-11-25
+
+- Mon hypothèse est que je serai en mesure de prédire le score   d'une partie en utilisant des données historiques des parties 
+
+##Variables utilisées
+
+- Points marqués en moyenne
+- Point contre en moyenne
+- Verge pour en moyenne
+- verge contre en moyenne
+- premiers essais réussis en moyenne
+- premiers essais accordés en moyenne
+- revirements pour
+- revirements contre
+- Home ou away
+
+
+
+Il est importa
+
+
+
+
+
+
