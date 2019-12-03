@@ -197,6 +197,7 @@ Info_VS <- function(Year, Week) {
 # MatchUp[which(MatchUp[,"Team_Abb"] == "WSH"), ] <- "WAS"
 
 Weekly_stats <- function(Year, Week) {
+  {
   Offense_DF <- Offense_Scraping(Year, Week)
   Downs_DF <- Downs_Scraping(Year, Week)
   Turnovers_DF <- Turnovers_Scraping(Year, Week)
@@ -206,11 +207,11 @@ Weekly_stats <- function(Year, Week) {
   
   if (length(BYE_TEAMS)) {
     for (i in seq(length(BYE_TEAMS))) {
-      Offense_DF[(32 - i), ] <-
+      Offense_DF[(33 - i), ] <-
         c(BYE_TEAMS[i], rep(NA, ncol(Offense_DF) - 1))
-      Downs_DF[(32 - i), ] <-
+      Downs_DF[(33 - i), ] <-
         c(BYE_TEAMS[i], rep(NA, ncol(Downs_DF) - 1))
-      Turnovers_DF[(32 - i), ] <-
+      Turnovers_DF[(33 - i), ] <-
         c(BYE_TEAMS[i], rep(NA, ncol(Turnovers_DF) - 1))
     }
   }
@@ -281,8 +282,10 @@ Weekly_stats <- function(Year, Week) {
                        Points,Yards,FirstDowns,Int,Fum,Points_VS,Yards_VS,
                        FirstDown_VS,Int_VS,Fum_VS
   )
+}
   return(Weekly_stat)
 }
+
 
 Stat_UTD <- function(Save_RDS = T) {
   Year <- year(Sys.Date())

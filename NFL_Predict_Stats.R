@@ -13,7 +13,9 @@ library("lubridate")
 library("rpart")
 library("rpart.plot")
 library("abind")
-library("rstudioapi")  
+library("rstudioapi")
+library("GMCM")
+    
 }
 
 # Base Infos ##################################################################################
@@ -31,48 +33,66 @@ for(teamz in seq(length(Complete_Names))){
 colnames(List_Stats_Teams[[teamz]]) <-  c("Points", Var_Exp)
 }
 
+RM_NA_List_Stats_Teams <- lapply(seq(nrow(City_Team_Sign)), function(teamz) lapply(seq(dim(List_Stats_Teams[[teamz]])[3]), function(Yearz) List_Stats_Teams[[teamz]][!is.na(List_Stats_Teams[[teamz]][,1,Yearz]),,Yearz]))
+Cummean_List_Stats_Teams <- lapply(seq(nrow(City_Team_Sign)), function(teamz) lapply(seq(dim(List_Stats_Teams[[teamz]])[3]), function(Yearz) apply(List_Stats_Teams[[teamz]][!is.na(List_Stats_Teams[[teamz]][,1,Yearz]),,Yearz], 2, GMCM:::cummean)))
+
 names(List_Data_Teams) <-City_Team_Sign[,"Team_Abb"]
 names(List_Stats_Teams) <-City_Team_Sign[,"Team_Abb"]
+names(RM_NA_List_Stats_Teams) <- City_Team_Sign[,"Team_Abb"]
+names(Cummean_List_Stats_Teams) <- City_Team_Sign[,"Team_Abb"]
 
 
-k_fold <- numeric(11)
+for(i in seq(nrow(City_Team_Sign))){
 
-for(testing in 1:11){
+Teamz_Statz <- RM_NA_List_Stats_Teams[[i]][[2]]
+Teamz_Statz_N <- apply(Teamz_Statz, 2, as.numeric)[,-1]
+
+Nb_Games_Played <- nrow(Teamz_Statz)
+
+k_fold <- numeric(Nb_Games_Played)
+
+for(testing in seq(Nb_Games_Played)){
+  
   set.seed(0)
-  m <- 60
+  m <- 20
   p <- 0.8
   
-  training <- seq(11)[-testing]
+  training <- seq(Nb_Games_Played)[-testing]
   
-  rez <- as.numeric(GB$Points[training])
   
+  Points_ref <- as.numeric(Teamz_Statz[,"Points"])[-testing]
+  Points <- Points_ref
   for(i in seq(m)){
     vecbin <- sample(seq(length(Var_Exp)),rbinom(1, length(Var_Exp), p))
-    temp_matrix <- GB[training, vecbin]
-    GB_rpart_temp <- rpart(rez ~., data = temp_matrix,   control = rpart.control(minbucket = 3))
-    assign(paste("GB_rpart_temp", i, sep = ""), GB_rpart_temp)
-    rez <- rez - predict(GB_rpart_temp)
+    temp_matrix <- data.frame(cbind(Points, Teamz_Statz_N[training, vecbin]))
+    team_rpart_temp <- rpart(Points~., data = temp_matrix,   control = rpart.control(minbucket = 2))
+    assign(paste("team_rpart_temp", i, sep = ""), team_rpart_temp)
+    Points <- Points - predict(team_rpart_temp)
   }
   
   rez_fin <- 0
-  new_data <- GB[testing,]
-  rez_suivi <- as.numeric(m)
+  new_data <- data.frame(t(as.numeric(Teamz_Statz[testing,])))
+  names(new_data) <- c("Points", Var_Exp)
+  rez_suivi <- numeric(m)
   for (i in seq(m)){
-    rez_fin = rez_fin + predict(eval(parse(text = paste("GB_rpart_temp", i, sep = ""))), newdata = new_data)
+    rez_fin = rez_fin + predict(eval(parse(text = paste("team_rpart_temp", i, sep = ""))), newdata = new_data)
     rez_suivi[i] <- rez_fin
   }
 
-  print(c(GB$Points[testing],rez_fin))
+  print(c(Teamz_Statz[,"Points"][testing],rez_fin))
   plot(rez_suivi)
   k_fold[testing] <- rez_fin
 }
-point_max <- max(GB$Points,k_fold)
-plot(GB$Points,round(k_fold),xlim = c(0,point_max),ylim = c(0,point_max))
+
+
+}
+point_max <- max(as.numeric(RM_NA_List_Stats_Teams[[i]][[2]][,"Points"]),k_fold)
+plot(as.numeric(RM_NA_List_Stats_Teams[[i]][[2]][,"Points"]),round(k_fold),xlim = c(0,point_max),ylim = c(0,point_max))
 lines(c(0,100),c(0,100))
 lines(c(0,100),c(0,100)-3,col = "blue");lines(c(0,100),c(0,100)+3,col = "blue")
 lines(c(0,100),c(0,100)-8,col = "red");lines(c(0,100),c(0,100)+8,col = "red")
 
-summary(GB$Points - k_fold)
+summary(Points_ref - k_fold)
 
 
 
