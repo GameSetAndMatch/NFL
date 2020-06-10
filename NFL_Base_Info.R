@@ -38,3 +38,10 @@ colnames(City_Team_Sign) <- c("City", "Team", "Team_Abb")
 # Stats_Used
 stats_name <- c("Points", "Yards", "FirstDown", "Int", "Fum","Points_VS",
                 "Yards_VS","FirstDown_VS","Int_VS","Fum_VS","Week_Matchup", "Pos_Team" )
+
+Var_Info <- c("Complete_Names","Team_Abb","Rang_Alpha","Complete_Names_VS","Team_Abb_VS" ,"Rang_Alpha_VS","Field","Situation")
+Var_Exp <- c("Yards", "FirstDowns", "Int", "Fum", "Points_VS", "Yards_VS", "Firstdowns_VS", "Int_VS", "Fum_VS", "HomeField")
+
+
+
+
