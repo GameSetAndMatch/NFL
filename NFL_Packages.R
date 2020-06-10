@@ -1,22 +1,22 @@
-#list of packages NFL
-{ library("rvest")
-  library("plyr")
-  library("lubridate")
-  library("rpart")
-  library("rpart.plot")
-  library("abind")
-  library("rstudioapi")
-  library("GMCM")
-  library("glmnet")
-  library("fitdistrplus")
-  library("logspline")
-  library("mice")
-  library("VIM")
-  library("lattice")
-  library("gdata")
-  library("missForest")
-  library("rsample")
-  library("purrr")
-  library("vtreat")
-  library("xgboost")
-}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("rvest",
+               "plyr",
+               "lubridate",
+               "rpart",
+               "rpart.plot",
+               "abind",
+               "rstudioapi",
+               "GMCM",
+               "glmnet",
+               "fitdistrplus",
+               "logspline",
+               "mice",
+               "VIM",
+               "lattice",
+               "gdata",
+               "missForest",
+               "rsample",
+               "purrr",
+               "vtreat",
+               "xgboost")
+
