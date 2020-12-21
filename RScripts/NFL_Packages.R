@@ -1,0 +1,23 @@
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("rvest",
+               "plyr",
+               "lubridate",
+               "rpart",
+               "rpart.plot",
+               "abind",
+               "rstudioapi",
+               "GMCM",
+               "glmnet",
+               "fitdistrplus",
+               "logspline",
+               "mice",
+               "VIM",
+               "lattice",
+               "gdata",
+               "missForest",
+               "rsample",
+               "purrr",
+               "vtreat",
+               "xgboost",
+               "MASS")
+
